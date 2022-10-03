@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
     protected Rigidbody enemyRb;
     protected GameObject player;
     public PlayerController playerController;
+    public int pointValue;
 
     // Start is called before the first frame update
     protected void Start()
