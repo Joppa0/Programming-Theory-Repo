@@ -132,8 +132,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 621155919}
+  - component: {fileID: 621155920}
   m_Layer: 0
-  m_Name: SpawnManager
+  m_Name: Spawn Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,6 +154,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &621155920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621155918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6dc9802f1221d5418f915711bf33f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab:
+  - {fileID: 3344164831251503762, guid: 02640200df5571443958b3520735a22f, type: 3}
+  - {fileID: 6132412009823443529, guid: d481418dfca6f6649a46314428976b67, type: 3}
+  - {fileID: 6823340156991376998, guid: 550a673551209934a9d57d8866a3f1ff, type: 3}
+  enemyCount: 0
+  waveNumber: 1
+  spawnRange: 9
 --- !u!1 &959570237
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +492,7 @@ GameObject:
   - component: {fileID: 1957465652}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -492,6 +512,7 @@ MonoBehaviour:
   moveSpeed: 5
   verticalInput: 0
   horizontalInput: 0
+  life: 5
   bulletPrefab: {fileID: 5609019768586405043, guid: 772db7a1a3f069a44a30312ba08ce53e, type: 3}
 --- !u!136 &1957465652
 CapsuleCollider:

@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
     public float verticalInput;
 
     public float horizontalInput;
+
+    public int life = 5;
 
     public GameObject bulletPrefab;
 
