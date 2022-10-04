@@ -9,6 +9,7 @@ public class MainManager : MonoBehaviour
     public Text PlayerName;
     public Text BestScore;
     public GameObject GameOverText;
+    public PlayerController playerController;
 
     private bool m_GameOver = false;
     private int m_Points;
@@ -16,9 +17,14 @@ public class MainManager : MonoBehaviour
     {
         PlayerName.text = "Player Name: " + WinnerList.instance.playerName;
         SetBestPlayer();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
     void Update()
     {
+        if (playerController.life == 0)
+        {
+            GameOver();
+        }
         if (m_GameOver)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -28,11 +34,18 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    void AddPoint(int point)
+    public void AddPoint(int point)
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
         WinnerList.instance.score = m_Points;
+    }
+
+    public void GameOver()
+    {
+        m_GameOver = true;
+        CheckBestPlayer();
+        GameOverText.SetActive(true);
     }
 
     public void CheckBestPlayer()

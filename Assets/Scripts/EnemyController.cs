@@ -7,7 +7,9 @@ public class EnemyController : MonoBehaviour
     protected Rigidbody enemyRb;
     protected GameObject player;
     public PlayerController playerController;
-    public int pointValue;
+    public int pointValue = 5;
+
+    public MainManager mainManager;
 
     // Start is called before the first frame update
     protected void Start()
@@ -15,6 +17,7 @@ public class EnemyController : MonoBehaviour
         enemyRb = GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
     }
 
     // Update is called once per frame
@@ -27,6 +30,7 @@ public class EnemyController : MonoBehaviour
     {
         Destroy(gameObject);
         Destroy(other.gameObject);
+        mainManager.AddPoint(pointValue);
     }
 
     protected void OnCollisionEnter(Collision collision)
