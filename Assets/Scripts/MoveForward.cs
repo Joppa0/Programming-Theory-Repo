@@ -23,8 +23,10 @@ public class MoveForward : MonoBehaviour
     //ABSTRACTION
     private void Move()
     {
+        //Moves the bullet forward
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
 
+        //Destroys out of bounds bullets
         if (transform.position.x > maxPosition || transform.position.x < -maxPosition || transform.position.y > maxPosition || transform.position.z < -maxPosition)
         {
             Destroy(gameObject);

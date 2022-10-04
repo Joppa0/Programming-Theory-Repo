@@ -21,7 +21,7 @@ public class CameraMovement : MonoBehaviour
 
     private void MoveCamera()
     {
+        //Moves the camera to follow the player
         transform.position = new Vector3(player.transform.position.x, yOffset, player.transform.position.z);
     }
-
 }

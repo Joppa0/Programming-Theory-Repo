@@ -9,22 +9,30 @@ public class MainManager : MonoBehaviour
     public Text PlayerName;
     public Text BestScore;
     public GameObject GameOverText;
-    public PlayerController playerController;
 
-    private bool m_GameOver = false;
+    private PlayerController playerController;
+
+    public bool m_GameOver = false;
     private int m_Points;
+
+    public GameObject[] gameObjects;
+
     void Start()
     {
+        //Sets the text on the player name UI
         PlayerName.text = "Player Name: " + WinnerList.instance.playerName;
+
         SetBestPlayer();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
     void Update()
     {
-        if (playerController.life == 0)
+        //Calls GameOver method if the player is out of life
+        if (playerController.life < 1)
         {
             GameOver();
         }
+        //Lets player restart the game
         if (m_GameOver)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -36,6 +44,7 @@ public class MainManager : MonoBehaviour
 
     public void AddPoint(int point)
     {
+        //Adds the amount of points gained from killing an enemy to the total score
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
         WinnerList.instance.score = m_Points;
@@ -43,6 +52,7 @@ public class MainManager : MonoBehaviour
 
     public void GameOver()
     {
+        //Call the CheckBestPlayer method and activate the game over screen
         m_GameOver = true;
         CheckBestPlayer();
         GameOverText.SetActive(true);
@@ -50,6 +60,7 @@ public class MainManager : MonoBehaviour
 
     public void CheckBestPlayer()
     {
+        //Checks if run was a new best, then calls method to save it if it is
         if (WinnerList.instance.score >= WinnerList.instance.bestScore)
         {
             WinnerList.instance.bestPlayer = WinnerList.instance.playerName;
@@ -60,6 +71,7 @@ public class MainManager : MonoBehaviour
 
     public void SetBestPlayer()
     {
+        //Sets the text to be displayed
         if (WinnerList.instance.bestPlayer == null && WinnerList.instance.bestScore == 0)
         {
             BestScore.text = " ";
