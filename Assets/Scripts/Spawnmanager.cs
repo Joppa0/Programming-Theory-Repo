@@ -8,8 +8,9 @@ public class SpawnManager : MonoBehaviour
 
     public int enemyCount;
     public int waveNumber = 1;
-    public float spawnRange = 9.0f;
 
+    public float spawnRange = 9.0f;
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -38,8 +39,10 @@ public class SpawnManager : MonoBehaviour
 
     private Vector3 GenerateSpawnPosition()
     {
-        float spawnPosX = Random.Range(-spawnRange, spawnRange);
-        float spawnPosZ = Random.Range(-spawnRange, spawnRange);
+        Vector3 playerPos = GameObject.Find("Player").transform.position;
+
+        float spawnPosX = Random.Range(-spawnRange, spawnRange) + playerPos.x;
+        float spawnPosZ = Random.Range(-spawnRange, spawnRange) + playerPos.z;
 
         Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
 

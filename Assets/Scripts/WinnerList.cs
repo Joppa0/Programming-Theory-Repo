@@ -5,7 +5,8 @@ using System.IO;
 
 public class WinnerList : MonoBehaviour
 {
-    public static WinnerList instance;
+    //ENCAPSULATION
+    public static WinnerList instance { get; private set; }
     public string playerName;
     public int score;
     public string bestPlayer;
@@ -47,6 +48,5 @@ public class WinnerList : MonoBehaviour
             bestPlayer = data.savePlayer;
             bestScore = data.saveScore;
         }
-
     }
 }

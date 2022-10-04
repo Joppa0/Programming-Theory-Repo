@@ -6,7 +6,7 @@ public class MoveForward : MonoBehaviour
 {
     private float speed = 20.0f;
 
-    private float maxPosition = 50.0f;
+    private float maxPosition = 75.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +16,12 @@ public class MoveForward : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        Move();
+    }
+
+    //ABSTRACTION
+    private void Move()
     {
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
 
