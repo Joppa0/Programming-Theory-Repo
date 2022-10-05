@@ -1370,10 +1370,12 @@ MonoBehaviour:
   - {fileID: 4803014352389650695, guid: 06cb2b131fe009c47a523671a8fa9ed8, type: 3}
   enemyCount: 0
   waveNumber: 1
-  spawnRange: 9
+  spawnRangeX: 40
+  spawnRangeZ: 15
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  cam: {fileID: 0}
 --- !u!1001 &624604401
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2530,7 +2532,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

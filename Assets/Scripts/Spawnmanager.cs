@@ -6,16 +6,19 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject[] enemyPrefab;
 
-    public int enemyCount;
-    public int waveNumber = 1;
+    private int enemyCount;
+    private int waveNumber = 2;
 
-    public float spawnRange = 9.0f;
+    [SerializeField] private float spawnRangeX = 20.0f;
+    [SerializeField] private float spawnRangeZ = 7.5f;
 
     public LayerMask m_LayerMask;
+    public Camera cam;
  
     // Start is called before the first frame update
     void Start()
     {
+        cam = Camera.main;
         SpawnEnemyWave(waveNumber);
     }
 
@@ -24,7 +27,7 @@ public class SpawnManager : MonoBehaviour
     {
         //Spawns a new wave and increments the wave number if there are no enemies left
         enemyCount = FindObjectsOfType<EnemyController>().Length;
-        if (enemyCount == 0)
+        if (enemyCount == 1)
         {
             waveNumber++;
             SpawnEnemyWave(waveNumber);
@@ -42,7 +45,7 @@ public class SpawnManager : MonoBehaviour
             int randNumber = Random.Range(0, 3);
 
             //Creates a box to check for collisions when trying to spawn
-            Collider[] collisionWithEnemy = Physics.OverlapBox(placeToSpawn, enemyPrefab[randNumber].transform.localScale / 2, Quaternion.identity, m_LayerMask);
+            Collider[] collisionWithEnemy = Physics.OverlapBox(placeToSpawn, enemyPrefab[randNumber].transform.localScale, Quaternion.identity, m_LayerMask);
 
             //If there are collisions other than the ground, spawn a new enemy with a new spawnpoint
             if (collisionWithEnemy.Length > 1)
@@ -59,13 +62,28 @@ public class SpawnManager : MonoBehaviour
 
     private Vector3 GenerateSpawnPosition()
     {
-        //Generates a random position inside a certain distance of the player position
-        Vector3 playerPos = GameObject.Find("Player").transform.position;
+        //Generates a random spawn position outside the camera's view
+        bool goodSpawn = false;
 
-        float spawnPosX = Random.Range(-spawnRange, spawnRange) + playerPos.x;
-        float spawnPosZ = Random.Range(-spawnRange, spawnRange) + playerPos.z;
+        Vector3 finalSpawn = new Vector3();
 
-        Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
-        return randomPos;
+        while (goodSpawn == false)
+        {
+            Vector3 playerPos = GameObject.Find("Player").transform.position;
+
+            float spawnPosX = Random.Range(-spawnRangeX, spawnRangeX) + playerPos.x;
+            float spawnPosZ = Random.Range(-spawnRangeZ, spawnRangeZ) + playerPos.z;
+
+            Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
+
+            Vector3 pos = cam.WorldToViewportPoint(new Vector3(randomPos.x, cam.nearClipPlane, randomPos.z));
+
+            if (!(pos.x < 1 && pos.x > 0) || !(pos.y < 1 && pos.y > 0))
+            {
+                goodSpawn = true;
+                finalSpawn = randomPos;
+            }
+        }
+        return finalSpawn;
     }
 }

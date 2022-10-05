@@ -43,11 +43,16 @@ public class EnemyController : MonoBehaviour
             Destroy(gameObject);
             playerController.life--;
         }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(collision.gameObject);
+        }
     }
 
     //Move function can be overriden by child classes to change the speed
     protected virtual void Move()
     {
+
         if (!mainManager.m_GameOver)
         {
             float speed = 2.0f;
