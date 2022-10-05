@@ -10,6 +10,8 @@ public class SpawnManager : MonoBehaviour
     public int waveNumber = 1;
 
     public float spawnRange = 9.0f;
+
+    public LayerMask m_LayerMask;
  
     // Start is called before the first frame update
     void Start()
@@ -34,8 +36,24 @@ public class SpawnManager : MonoBehaviour
         //Spawns random new enemies with random positions
         for (int i = 0; i < enemiesToSpawn; i++)
         {
+            //Stores the place to spawn the enemy
+            Vector3 placeToSpawn = GenerateSpawnPosition();
+
             int randNumber = Random.Range(0, 3);
-            Instantiate(enemyPrefab[randNumber], GenerateSpawnPosition(), enemyPrefab[randNumber].transform.rotation);
+
+            //Creates a box to check for collisions when trying to spawn
+            Collider[] collisionWithEnemy = Physics.OverlapBox(placeToSpawn, enemyPrefab[randNumber].transform.localScale / 2, Quaternion.identity, m_LayerMask);
+
+            //If there are collisions other than the ground, spawn a new enemy with a new spawnpoint
+            if (collisionWithEnemy.Length > 1)
+            {
+                enemiesToSpawn++;
+            }
+            //If there are no other collisions, spawn at the chosen spawnpoint
+            else
+            {
+                Instantiate(enemyPrefab[randNumber], placeToSpawn, enemyPrefab[randNumber].transform.rotation);
+            }
         }
     }
 
@@ -48,7 +66,6 @@ public class SpawnManager : MonoBehaviour
         float spawnPosZ = Random.Range(-spawnRange, spawnRange) + playerPos.z;
 
         Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
-
         return randomPos;
     }
 }

@@ -15,8 +15,6 @@ public class MainManager : MonoBehaviour
     public bool m_GameOver = false;
     private int m_Points;
 
-    public GameObject[] gameObjects;
-
     void Start()
     {
         //Sets the text on the player name UI
