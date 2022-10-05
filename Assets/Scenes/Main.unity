@@ -1368,10 +1368,8 @@ MonoBehaviour:
   - {fileID: 4493914613880827488, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
   - {fileID: 1998371697940912222, guid: d58be77cba3adf54cb14b15052b86514, type: 3}
   - {fileID: 4803014352389650695, guid: 06cb2b131fe009c47a523671a8fa9ed8, type: 3}
-  enemyCount: 0
-  waveNumber: 1
-  spawnRangeX: 40
-  spawnRangeZ: 15
+  spawnRangeX: 20
+  spawnRangeZ: 7.5
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
