@@ -11,7 +11,7 @@ public class FastZombie : EnemyController
         if (!mainManager.m_GameOver)
         {
             //Overrides the Move method from it's parent to change the speed
-            float speed = 3.0f;
+            /*float speed = 3.0f;
 
             Vector3 lookdirection = (player.transform.position - transform.position).normalized;
 
@@ -19,7 +19,11 @@ public class FastZombie : EnemyController
 
             transform.rotation = Quaternion.Euler(0, rotation, 0);
 
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);*/
+
+            nav.speed = 3.0f;
+
+            nav.SetDestination(player.transform.position);
         }
     }
 }

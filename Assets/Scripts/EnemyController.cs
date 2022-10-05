@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
     protected Rigidbody enemyRb;
     protected GameObject player;
 
-    public MainManager mainManager;
-    public PlayerController playerController;
+    protected MainManager mainManager;
+    private PlayerController playerController;
 
     private int pointValue = 5;
+    protected NavMeshAgent nav;
 
     // Start is called before the first frame update
     protected void Start()
@@ -19,6 +21,7 @@ public class EnemyController : MonoBehaviour
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
+        nav = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -43,19 +46,14 @@ public class EnemyController : MonoBehaviour
             Destroy(gameObject);
             playerController.life--;
         }
-        else if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            Destroy(collision.gameObject);
-        }
     }
 
     //Move function can be overriden by child classes to change the speed
     protected virtual void Move()
     {
-
         if (!mainManager.m_GameOver)
         {
-            float speed = 2.0f;
+            /*float speed = 2.0f;
 
             //Finds the vector3 direction to look in
             Vector3 lookdirection = (player.transform.position - transform.position).normalized;
@@ -67,7 +65,12 @@ public class EnemyController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, rotation, 0);
 
             //Moves enemy forward, meaning it's always towards the player
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);*/
+
+            //Sets the speed of the zombie and the destination as the player's position, meaning the zombie will move towards the player
+            nav.speed = 2.0f;
+
+            nav.SetDestination(player.transform.position);
         }
     }
 }
