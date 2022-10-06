@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     public GameObject[] enemyPrefab;
+    public GameObject[] powerupPrefab;
 
     private int enemyCount;
     private int waveNumber = 2;

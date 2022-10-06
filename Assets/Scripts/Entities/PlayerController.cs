@@ -11,10 +11,13 @@ public class PlayerController : MonoBehaviour
 
     private float horizontalInput;
 
+    private PowerUp powerupScript;
+
     public MainManager mainManager;
 
     public int life = 5;
     public int numOfHearts = 5;
+    public bool hasPowerup = false;
 
     public GameObject bulletPrefab;
 
