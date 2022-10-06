@@ -10,8 +10,10 @@ public class SpawnManager : MonoBehaviour
     private int enemyCount;
     private int waveNumber = 2;
 
-    [SerializeField] private float spawnRangeX = 20.0f;
-    [SerializeField] private float spawnRangeZ = 7.5f;
+    [SerializeField] private float enemySpawnRangeX = 20.0f;
+    [SerializeField] private float enemySpawnRangeZ = 7.5f;
+    [SerializeField] private float prefabSpawnRangeX = 15f;
+    [SerializeField] private float prefabSpawnRangeZ = 5f;
 
     public LayerMask m_LayerMask;
     public Camera cam;
@@ -41,7 +43,7 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < enemiesToSpawn; i++)
         {
             //Stores the place to spawn the enemy
-            Vector3 placeToSpawn = GenerateSpawnPosition();
+            Vector3 placeToSpawn = GenerateEnemySpawnPosition();
 
             int randNumber = Random.Range(0, 3);
 
@@ -59,9 +61,21 @@ public class SpawnManager : MonoBehaviour
                 Instantiate(enemyPrefab[randNumber], placeToSpawn, enemyPrefab[randNumber].transform.rotation);
             }
         }
+        if (GameObject.FindObjectsOfType<PowerUp>().Length == 0)
+        {
+            //Instantiates powerup if none remain at the start of a new wave
+            Instantiate(powerupPrefab[Random.Range(0, 2)], GeneratePrefabSpawnPosition(), Quaternion.identity);
+        }
     }
 
-    private Vector3 GenerateSpawnPosition()
+    private Vector3 GeneratePrefabSpawnPosition()
+    {
+        //Generates a spawnpoint for the powerup
+        Vector3 spawnPos = new Vector3(Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX), -4.3f, Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ));
+        return spawnPos;
+    }
+
+    private Vector3 GenerateEnemySpawnPosition()
     {
         //Generates a random spawn position outside the camera's view
         bool goodSpawn = false;
@@ -72,8 +86,8 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 playerPos = GameObject.Find("Player").transform.position;
 
-            float spawnPosX = Random.Range(-spawnRangeX, spawnRangeX) + playerPos.x;
-            float spawnPosZ = Random.Range(-spawnRangeZ, spawnRangeZ) + playerPos.z;
+            float spawnPosX = Random.Range(-enemySpawnRangeX, enemySpawnRangeX) + playerPos.x;
+            float spawnPosZ = Random.Range(-enemySpawnRangeZ, enemySpawnRangeZ) + playerPos.z;
 
             Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
 

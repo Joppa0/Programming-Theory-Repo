@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    private float moveSpeed = 5f;
+    private float moveSpeed = 3f;
 
     private float verticalInput;
-
     private float horizontalInput;
+
+    private int powerupTime;
 
     private PowerUp powerupScript;
 
@@ -124,5 +125,23 @@ public class PlayerController : MonoBehaviour
                 Instantiate(bulletPrefab, transform.position, transform.rotation);
             }
         }
+    }
+
+    public void OnSpeedBoostEnter()
+    {
+        powerupTime = 5;
+        StartCoroutine(SpeedBoostRoutine());
+    }
+
+    public void OnHealthPickupEnter()
+    {
+        life++;
+    }
+
+    IEnumerator SpeedBoostRoutine()
+    {
+        moveSpeed = 6f;
+        yield return new WaitForSeconds(powerupTime);
+        moveSpeed = 3f;
     }
 }

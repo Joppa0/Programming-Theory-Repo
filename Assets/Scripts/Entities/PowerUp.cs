@@ -6,6 +6,8 @@ public class PowerUp : MonoBehaviour
 {
     protected PlayerController player;
 
+    [SerializeField] int powerupID;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,15 +18,21 @@ public class PowerUp : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.hasPowerup = true;
-            Destroy(gameObject);
-            StartCoroutine(PowerupEffect());
-        }
-    }
+            //Checks which powerup the player has collided with, then calls the appropriate function
+            switch (powerupID)
+            {
+                case 0:
+                    player.OnHealthPickupEnter();
+                    break;
 
-    protected virtual IEnumerator PowerupEffect()
-    {
-        yield return new WaitForSeconds(7);
-        player.hasPowerup = false;
+                case 1:
+                    player.OnSpeedBoostEnter();
+                    break;
+
+                default:
+                    break;
+            }
+            Destroy(gameObject);
+        }
     }
 }

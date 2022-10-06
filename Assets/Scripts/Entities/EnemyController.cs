@@ -33,9 +33,12 @@ public class EnemyController : MonoBehaviour
     protected void OnTriggerEnter(Collider other)
     {
         //If the enemy collides with a bullet, destroy the bullet and enemy, and add points to the instance
-        Destroy(gameObject);
-        Destroy(other.gameObject);
-        mainManager.AddPoint(pointValue);
+        if (other.CompareTag("Bullet"))
+        {
+            Destroy(gameObject);
+            Destroy(other.gameObject);
+            mainManager.AddPoint(pointValue);
+        }
     }
 
     protected void OnCollisionEnter(Collision collision)
