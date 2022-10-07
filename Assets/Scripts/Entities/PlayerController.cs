@@ -12,19 +12,22 @@ public class PlayerController : MonoBehaviour
 
     private int powerupTime;
 
+    private bool hasTripleShot = false;
+    public bool hasHeatSeeking = false;
+
     private PowerUp powerupScript;
 
     public MainManager mainManager;
 
     public int life = 5;
     public int numOfHearts = 5;
-    public bool hasPowerup = false;
 
     public GameObject bulletPrefab;
 
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
+    
 
     private void Start()
     {
@@ -95,6 +98,8 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
+        int rotationOffset = 15;
+
         if (!mainManager.m_GameOver)
         {
             //Fires ray from the mouse
@@ -120,11 +125,41 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, rotation, 0);
             }
             //Instantiates a bullet if left mouse button is clicked
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !hasTripleShot)
             {
                 Instantiate(bulletPrefab, transform.position, transform.rotation);
             }
+            else if (Input.GetMouseButtonDown(0) && hasTripleShot)
+            {
+                //Instantiates three different bullets, each with different rotation
+                for (int i = 0; i < 3; i++)
+                {
+                    Vector3 playerRotation = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z);
+
+                    switch (i)
+                    {
+                        case 0: 
+                            playerRotation.y -= rotationOffset;
+                            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(playerRotation));
+                            break;
+                        case 1:
+                            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(playerRotation));
+                            break;
+                        case 2:
+                            playerRotation.y += rotationOffset;
+                            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(playerRotation));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
+    }
+
+    public void OnHealthPickupEnter()
+    {
+        life++;
     }
 
     public void OnSpeedBoostEnter()
@@ -133,9 +168,30 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(SpeedBoostRoutine());
     }
 
-    public void OnHealthPickupEnter()
+    public void OnTripleShotEnter()
     {
-        life++;
+        powerupTime = 5;
+        StartCoroutine(TripleShotRoutine());
+    }
+
+    public void OnHeatSeekingPickup()
+    {
+        powerupTime = 5;
+        StartCoroutine(HeatSeekingRoutine());
+    }
+
+    IEnumerator HeatSeekingRoutine()
+    {
+        hasHeatSeeking = true;
+        yield return new WaitForSeconds(powerupTime);
+        hasHeatSeeking = false;
+    }
+
+    IEnumerator TripleShotRoutine()
+    {
+        hasTripleShot = true;
+        yield return new WaitForSeconds(powerupTime);
+        hasTripleShot = false;
     }
 
     IEnumerator SpeedBoostRoutine()

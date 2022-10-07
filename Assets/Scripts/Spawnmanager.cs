@@ -12,8 +12,8 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private float enemySpawnRangeX = 20.0f;
     [SerializeField] private float enemySpawnRangeZ = 7.5f;
-    [SerializeField] private float prefabSpawnRangeX = 15f;
-    [SerializeField] private float prefabSpawnRangeZ = 5f;
+    [SerializeField] private float prefabSpawnRangeX = 12f;
+    [SerializeField] private float prefabSpawnRangeZ = 4f;
 
     public LayerMask m_LayerMask;
     public Camera cam;
@@ -42,36 +42,38 @@ public class SpawnManager : MonoBehaviour
         //Spawns random new enemies with random positions
         for (int i = 0; i < enemiesToSpawn; i++)
         {
-            //Stores the place to spawn the enemy
             Vector3 placeToSpawn = GenerateEnemySpawnPosition();
 
             int randNumber = Random.Range(0, 3);
 
             //Creates a box to check for collisions when trying to spawn
             Collider[] collisionWithEnemy = Physics.OverlapBox(placeToSpawn, enemyPrefab[randNumber].transform.localScale, Quaternion.identity, m_LayerMask);
-
-            //If there are collisions other than the ground, spawn a new enemy with a new spawnpoint
+            
             if (collisionWithEnemy.Length > 1)
             {
+                //If there are collisions other than the ground, spawn a new enemy with a new spawnpoint
                 enemiesToSpawn++;
             }
-            //If there are no other collisions, spawn at the chosen spawnpoint
+            
             else
             {
+                //If there are no other collisions, spawn at the chosen spawnpoint
                 Instantiate(enemyPrefab[randNumber], placeToSpawn, enemyPrefab[randNumber].transform.rotation);
             }
         }
+
+        //Instantiates powerup if none remain at the start of a new wave
         if (GameObject.FindObjectsOfType<PowerUp>().Length == 0)
         {
-            //Instantiates powerup if none remain at the start of a new wave
-            Instantiate(powerupPrefab[Random.Range(0, 2)], GeneratePrefabSpawnPosition(), Quaternion.identity);
+            Instantiate(powerupPrefab[Random.Range(0, 3)], GeneratePrefabSpawnPosition(), Quaternion.identity);
         }
     }
 
     private Vector3 GeneratePrefabSpawnPosition()
     {
         //Generates a spawnpoint for the powerup
-        Vector3 spawnPos = new Vector3(Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX), -4.3f, Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ));
+        Vector3 playerPos = GameObject.Find("Player").transform.position;
+        Vector3 spawnPos = new Vector3(Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX) + playerPos.x, -4.3f, Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ) + playerPos.z);
         return spawnPos;
     }
 

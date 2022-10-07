@@ -29,6 +29,14 @@ public class PowerUp : MonoBehaviour
                     player.OnSpeedBoostEnter();
                     break;
 
+                case 2:
+                    player.OnTripleShotEnter();
+                    break;
+
+                case 3:
+
+                    break;
+
                 default:
                     break;
             }

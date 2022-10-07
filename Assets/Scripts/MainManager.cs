@@ -10,6 +10,9 @@ public class MainManager : MonoBehaviour
     public Text BestScore;
     public GameObject GameOverText;
 
+    public Transform playerTransform;
+    public CameraMovement cameraMovement;
+
     private PlayerController playerController;
 
     public bool m_GameOver = false;
@@ -17,6 +20,8 @@ public class MainManager : MonoBehaviour
 
     void Start()
     {
+        cameraMovement.Setup(() => playerTransform.position);
+
         //Sets the text on the player name UI
         PlayerName.text = "Player Name: " + WinnerList.instance.playerName;
 

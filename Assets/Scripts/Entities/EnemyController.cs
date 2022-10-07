@@ -7,15 +7,20 @@ public class EnemyController : MonoBehaviour
 {
     protected Rigidbody enemyRb;
     protected GameObject player;
-
+    
     protected MainManager mainManager;
-    private PlayerController playerController;
+    protected PlayerController playerController;
 
-    private int pointValue = 5;
+    protected int pointValue = 5;
+    protected int life = 1;
+    protected int damage = 1;
+
     protected NavMeshAgent nav;
 
+    public GameObject bulletImpactPrefab;
+
     // Start is called before the first frame update
-    protected void Start()
+    protected virtual void Start()
     {
         enemyRb = GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
@@ -32,12 +37,18 @@ public class EnemyController : MonoBehaviour
 
     protected void OnTriggerEnter(Collider other)
     {
-        //If the enemy collides with a bullet, destroy the bullet and enemy, and add points to the instance
+        //If the enemy collides with a bullet, destroy the bullet and enemy, add points to the instance and spawn the vfx
         if (other.CompareTag("Bullet"))
         {
-            Destroy(gameObject);
+            Instantiate(bulletImpactPrefab, transform.position, transform.rotation);
             Destroy(other.gameObject);
-            mainManager.AddPoint(pointValue);
+            life--;
+
+            if (life < 1)
+            {
+                Destroy(gameObject);
+                mainManager.AddPoint(pointValue);
+            }
         }
     }
 
@@ -47,7 +58,7 @@ public class EnemyController : MonoBehaviour
         {
             //Destroy the enemy and reduce the player's life if the two collide
             Destroy(gameObject);
-            playerController.life--;
+            playerController.life -= damage;
         }
     }
 
@@ -56,22 +67,8 @@ public class EnemyController : MonoBehaviour
     {
         if (!mainManager.m_GameOver)
         {
-            /*float speed = 2.0f;
-
-            //Finds the vector3 direction to look in
-            Vector3 lookdirection = (player.transform.position - transform.position).normalized;
-
-            //Gets desired rotation
-            float rotation = Mathf.Atan2(lookdirection.x, lookdirection.z) * Mathf.Rad2Deg;
-
-            //Rotates transform towards player
-            transform.rotation = Quaternion.Euler(0, rotation, 0);
-
-            //Moves enemy forward, meaning it's always towards the player
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);*/
-
             //Sets the speed of the zombie and the destination as the player's position, meaning the zombie will move towards the player
-            nav.speed = 2.0f;
+            nav.speed = 3.0f;
 
             nav.SetDestination(player.transform.position);
         }

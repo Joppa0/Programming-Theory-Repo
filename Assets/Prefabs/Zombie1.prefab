@@ -1774,8 +1774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7b8e63a5d28194e8f2a2009d4bf430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainManager: {fileID: 0}
-  playerController: {fileID: 0}
+  bulletImpactPrefab: {fileID: 100002, guid: 3b1513bcb86426b4795879be6a128ed7, type: 3}
 --- !u!195 &-5989848975952240106
 NavMeshAgent:
   m_ObjectHideFlags: 0
