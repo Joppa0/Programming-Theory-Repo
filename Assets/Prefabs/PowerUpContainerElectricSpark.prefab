@@ -4933,7 +4933,7 @@ GameObject:
   - component: {fileID: -6662085110861978691}
   m_Layer: 0
   m_Name: PowerUpContainerElectricSpark
-  m_TagString: Untagged
+  m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

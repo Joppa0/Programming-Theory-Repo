@@ -830,7 +830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa0188eb317c7b4286ccd4b4547eebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasTripleShot: 0
+  hasHeatSeeking: 0
   mainManager: {fileID: 0}
   life: 5
   numOfHearts: 5
@@ -1476,9 +1476,11 @@ MonoBehaviour:
   - {fileID: 1998371697940912222, guid: d58be77cba3adf54cb14b15052b86514, type: 3}
   - {fileID: 4803014352389650695, guid: 06cb2b131fe009c47a523671a8fa9ed8, type: 3}
   powerupPrefab:
-  - {fileID: 100008, guid: 879451a5e2214f143a7edf5dd3e32020, type: 3}
-  - {fileID: 100004, guid: 034e51e6d8986d04795f48b487231687, type: 3}
-  - {fileID: 100012, guid: f832b09c86bd81e4f91beb978de1ae75, type: 3}
+  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
+  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
+  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
+  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
+  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
   enemySpawnRangeX: 20
   enemySpawnRangeZ: 7.5
   prefabSpawnRangeX: 15

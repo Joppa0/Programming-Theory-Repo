@@ -34,7 +34,11 @@ public class PowerUp : MonoBehaviour
                     break;
 
                 case 3:
+                    player.OnSlowMotionEnter();
+                    break;
 
+                case 4:
+                    player.OnHeatSeekingEnter();
                     break;
 
                 default:

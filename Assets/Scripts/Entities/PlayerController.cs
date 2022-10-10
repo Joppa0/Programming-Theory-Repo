@@ -161,6 +161,11 @@ public class PlayerController : MonoBehaviour
     {
         life++;
     }
+    public void OnSlowMotionEnter()
+    {
+        powerupTime = 5;
+        StartCoroutine(SlowmoRoutine());
+    }
 
     public void OnSpeedBoostEnter()
     {
@@ -174,10 +179,17 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(TripleShotRoutine());
     }
 
-    public void OnHeatSeekingPickup()
+    public void OnHeatSeekingEnter()
     {
         powerupTime = 5;
         StartCoroutine(HeatSeekingRoutine());
+    }
+
+    IEnumerator SlowmoRoutine()
+    {
+        Time.timeScale = 0.5f;
+        yield return new WaitForSeconds(powerupTime);
+        Time.timeScale = 1;
     }
 
     IEnumerator HeatSeekingRoutine()
