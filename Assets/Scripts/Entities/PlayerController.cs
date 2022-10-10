@@ -26,8 +26,7 @@ public class PlayerController : MonoBehaviour
 
     public Image[] hearts;
     public Sprite fullHeart;
-    public Sprite emptyHeart;
-    
+    public Sprite emptyHeart; 
 
     private void Start()
     {

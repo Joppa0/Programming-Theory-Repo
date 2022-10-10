@@ -107,7 +107,7 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
-    agentHeight: 2
+    agentHeight: 3
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
@@ -134,6 +134,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,
         type: 3}
@@ -1476,15 +1491,11 @@ MonoBehaviour:
   - {fileID: 1998371697940912222, guid: d58be77cba3adf54cb14b15052b86514, type: 3}
   - {fileID: 4803014352389650695, guid: 06cb2b131fe009c47a523671a8fa9ed8, type: 3}
   powerupPrefab:
+  - {fileID: 100008, guid: 879451a5e2214f143a7edf5dd3e32020, type: 3}
+  - {fileID: 100004, guid: 034e51e6d8986d04795f48b487231687, type: 3}
+  - {fileID: 100012, guid: f832b09c86bd81e4f91beb978de1ae75, type: 3}
+  - {fileID: 100006, guid: 339ec13e94b70ca469275f6f7e29bac3, type: 3}
   - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
-  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
-  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
-  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
-  - {fileID: 100008, guid: e0b186a53bbd65f498681cafa278d094, type: 3}
-  enemySpawnRangeX: 20
-  enemySpawnRangeZ: 7.5
-  prefabSpawnRangeX: 15
-  prefabSpawnRangeZ: 6
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295

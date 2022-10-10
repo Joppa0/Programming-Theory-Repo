@@ -10,13 +10,6 @@ public class MoveForward : MonoBehaviour
 
     private float maxPosition = 20;
 
-    private float rotationSpeed = 0.05f;
-    private float rotationSpeedClose = 1f;
-    private Vector3 enemyPos;
-    private Vector3 moveDir = new Vector3(0, 0, 0);
-    [SerializeField] private float lowestDistance = 100;
-    [SerializeField] private float distance;
-
     private bool bulletCanHeatSeek = false;
 
     private void Start()
@@ -24,8 +17,7 @@ public class MoveForward : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         Move();
     }
@@ -33,6 +25,13 @@ public class MoveForward : MonoBehaviour
     //ABSTRACTION
     private void Move()
     {
+        float rotationSpeed = 0.1f;
+        float lowestDistance = 100;
+        float distance = 0;
+        Vector3 enemyPos;
+        Vector3 moveDir = new Vector3(0, 0, 0);
+
+        //Makes bullets seek out the enemy
         if (player.hasHeatSeeking)
         {
             StartCoroutine(TimeUntilHeatSeeking());
@@ -43,7 +42,6 @@ public class MoveForward : MonoBehaviour
                 for (int i = 0; i < enemies.Length; i++)
                 {
                     distance = Vector3.Distance(transform.position, enemies[i].transform.position);
-                    Debug.Log(distance);
                     if (distance < lowestDistance)
                     {
                         lowestDistance = distance;
@@ -53,13 +51,13 @@ public class MoveForward : MonoBehaviour
                 }
                 float rotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
 
-                if (distance < 3)
+                if (lowestDistance < 2)
                 {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotation, 0), rotationSpeedClose);
+                    transform.rotation = Quaternion.Euler(0, rotation, 0);
                 }
                 else
                 {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, rotation, 0), rotationSpeed);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, rotation, 0), rotationSpeed);
                 }
             }
             lowestDistance = 100;
@@ -71,15 +69,16 @@ public class MoveForward : MonoBehaviour
         Vector3 playerPos = GameObject.Find("Player").transform.position;
 
         //Destroys bullets who move too far away from player
-        if (transform.position.x > maxPosition + playerPos.x || transform.position.x < -maxPosition + playerPos.x || transform.position.y > maxPosition + playerPos.z || transform.position.z < -maxPosition + playerPos.z)
+        if (transform.position.x > maxPosition + playerPos.x || transform.position.x < -maxPosition + playerPos.x || transform.position.z > maxPosition + playerPos.z || transform.position.z < -maxPosition + playerPos.z)
         {
             Destroy(gameObject);
         }
     }
 
+    //Sets a cooldown after which bullets can start heatseeking
     IEnumerator TimeUntilHeatSeeking()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
         bulletCanHeatSeek = true;
     }
 }

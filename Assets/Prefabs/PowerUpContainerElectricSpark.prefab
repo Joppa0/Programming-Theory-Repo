@@ -4967,7 +4967,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5114279
-  m_Center: {x: -1.2301176, y: 5.218794, z: 2.1538954}
+  m_Center: {x: 0, y: 5.218794, z: 0}
 --- !u!54 &-8535568198209781552
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5011,7 +5011,7 @@ NavMeshObstacle:
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: -1.2, y: 5.2, z: 2.13}
+  m_Center: {x: 0, y: 5.2, z: 0}
   m_TimeToStationary: 0.5
 --- !u!1 &100008
 GameObject:

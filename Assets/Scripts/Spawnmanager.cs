@@ -10,10 +10,10 @@ public class SpawnManager : MonoBehaviour
     private int enemyCount;
     private int waveNumber = 2;
 
-    [SerializeField] private float enemySpawnRangeX = 20.0f;
-    [SerializeField] private float enemySpawnRangeZ = 7.5f;
-    [SerializeField] private float prefabSpawnRangeX = 12f;
-    [SerializeField] private float prefabSpawnRangeZ = 4f;
+    private float enemySpawnRangeX = 20.0f;
+    private float enemySpawnRangeZ = 7.5f;
+    private float prefabSpawnRangeX = 12f;
+    private float prefabSpawnRangeZ = 4f;
 
     public LayerMask m_LayerMask;
     public Camera cam;
