@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PowerUp : MonoBehaviour
 {
-    protected PlayerController player;
+    private PlayerController player;
 
     [SerializeField] int powerupID;
 

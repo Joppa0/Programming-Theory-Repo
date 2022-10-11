@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public int numOfHearts = 5;
 
     public GameObject bulletPrefab;
-    public GameObject powerupEffectPrefab;
+    public GameObject[] powerupEffectPrefab;
 
     public Image[] hearts;
     public Sprite fullHeart;
@@ -183,42 +183,49 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator SlowmoRoutine()
     {
+        powerupEffectPrefab[2].SetActive(true);
+
         Time.timeScale = 0.5f;
-        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
+
+        powerupEffectPrefab[2].SetActive(false);
+
         Time.timeScale = 1;
-        hasPowerUp = false;
     }
 
     IEnumerator HeatSeekingRoutine()
     {
         hasHeatSeeking = true;
 
-        powerupEffectPrefab.SetActive(true);
+        powerupEffectPrefab[3].SetActive(true);
 
-        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
         hasHeatSeeking = false;
-        hasPowerUp = false;
 
-        powerupEffectPrefab.SetActive(false);
+        powerupEffectPrefab[3].SetActive(false);
     }
 
     IEnumerator TripleShotRoutine()
     {
+        powerupEffectPrefab[1].SetActive(true);
+
         hasTripleShot = true;
-        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
+
+        powerupEffectPrefab[1].SetActive(false);
+
         hasTripleShot = false;
-        hasPowerUp = false;
     }
 
     IEnumerator SpeedBoostRoutine()
     {
+        powerupEffectPrefab[0].SetActive(true);
+
         moveSpeed = 6f;
-        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
+
+        powerupEffectPrefab[0].SetActive(false);
+
         moveSpeed = 3f;
-        hasPowerUp = false;
     }
 }

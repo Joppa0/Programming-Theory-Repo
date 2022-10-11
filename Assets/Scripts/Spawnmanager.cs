@@ -62,18 +62,44 @@ public class SpawnManager : MonoBehaviour
             }
         }
 
-        //Instantiates powerup if none remain at the start of a new wave
+        //Instantiates powerup at a clear location if none remain at the start of a new wave
         if (GameObject.FindObjectsOfType<PowerUp>().Length == 0)
         {
-            Instantiate(powerupPrefab[Random.Range(0, 5)], GeneratePrefabSpawnPosition(), Quaternion.identity);
+            int prefabsToSpawn = 1;
+
+            for (int i = 0; i < prefabsToSpawn; i++)
+            {
+                Vector3 placeToSpawn = GeneratePrefabSpawnPosition();
+
+                int randNumber = Random.Range(0, 5);
+
+                float radius = powerupPrefab[randNumber].GetComponent<SphereCollider>().radius * 2f;
+
+                Debug.Log(radius);
+
+                Collider[] collisions = Physics.OverlapSphere(placeToSpawn, radius, m_LayerMask);
+
+                Debug.Log(collisions.Length);
+
+                if (collisions.Length > 0)
+                {
+                    prefabsToSpawn++;
+                }
+                else
+                {
+                    Instantiate(powerupPrefab[randNumber], placeToSpawn, Quaternion.identity);
+                }
+            }
         }
     }
 
+    //Generates a spawnpoint for the powerup
     private Vector3 GeneratePrefabSpawnPosition()
     {
-        //Generates a spawnpoint for the powerup
         Vector3 playerPos = GameObject.Find("Player").transform.position;
         Vector3 spawnPos = new Vector3(Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX) + playerPos.x, -4.3f, Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ) + playerPos.z);
+        //FOR TESTING AGAINST THE ROCK IN THE SCENE Vector3 spawnPos = new Vector3(6.111492f, -4.3f, -2.746425f);
+
         return spawnPos;
     }
 
