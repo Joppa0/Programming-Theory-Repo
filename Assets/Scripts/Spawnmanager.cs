@@ -65,7 +65,7 @@ public class SpawnManager : MonoBehaviour
         //Instantiates powerup if none remain at the start of a new wave
         if (GameObject.FindObjectsOfType<PowerUp>().Length == 0)
         {
-            Instantiate(powerupPrefab[Random.Range(0, 4)], GeneratePrefabSpawnPosition(), Quaternion.identity);
+            Instantiate(powerupPrefab[Random.Range(0, 5)], GeneratePrefabSpawnPosition(), Quaternion.identity);
         }
     }
 

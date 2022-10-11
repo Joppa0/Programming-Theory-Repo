@@ -36,19 +36,21 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Move();
         Shoot();
         UpdateHealth();
     }
 
     private void FixedUpdate()
     {
-        Move();
+        
     }
 
     private void Move()
     {
         if (!mainManager.m_GameOver)
         {
+            
             //Gets the vertical and horizontal input to see if the player is trying to move the character
             verticalInput = Input.GetAxisRaw("Vertical");
             horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
             Vector3 worldCord = transform.InverseTransformDirection(direction);
 
             //Moves player character at a fixed rate
-            transform.Translate(worldCord * Time.fixedDeltaTime);
+            transform.Translate(worldCord * Time.deltaTime);
         }
     }
 
