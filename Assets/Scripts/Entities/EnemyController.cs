@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
     protected NavMeshAgent nav;
 
     public GameObject bulletImpactPrefab;
+    public GameObject playerTakeHitEffect;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -27,6 +28,9 @@ public class EnemyController : MonoBehaviour
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
         nav = GetComponent<NavMeshAgent>();
+
+        //Gives the enemy a random priority, leading to less blocking between enemies
+        nav.avoidancePriority = Random.Range(0, 100);
     }
 
     // Update is called once per frame
@@ -56,13 +60,15 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Destroy the enemy and reduce the player's life if the two collide
+            //Destroy the enemy, reduce the player's life and spawn the blood vfx they collide
+
+            Instantiate(playerTakeHitEffect, player.transform.position, Quaternion.identity);
             Destroy(gameObject);
             playerController.life -= damage;
         }
     }
 
-    //Move function can be overriden by child classes to change the speed
+    //Moves the enemy towards player as long as game isn't over
     protected virtual void Move()
     {
         if (!mainManager.m_GameOver)
@@ -71,6 +77,10 @@ public class EnemyController : MonoBehaviour
             nav.speed = 3.0f;
 
             nav.SetDestination(player.transform.position);
+        }
+        else
+        {
+            nav.ResetPath();
         }
     }
 }

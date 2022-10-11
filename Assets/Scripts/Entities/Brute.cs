@@ -14,6 +14,8 @@ public class Brute : EnemyController
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
         nav = GetComponent<NavMeshAgent>();
 
+        nav.avoidancePriority = Random.Range(0, 100);
+
         pointValue *= 2;
         life = 2;
         damage = 2;
@@ -21,8 +23,15 @@ public class Brute : EnemyController
 
     protected override void Move()
     {
-        nav.speed = 2.0f;
+        if (!mainManager.m_GameOver)
+        {
+            nav.speed = 2.0f;
 
-        nav.SetDestination(player.transform.position);
+            nav.SetDestination(player.transform.position);
+        }
+        else
+        {
+            nav.ResetPath();
+        }
     }
 }

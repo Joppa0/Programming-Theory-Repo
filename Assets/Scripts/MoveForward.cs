@@ -31,7 +31,7 @@ public class MoveForward : MonoBehaviour
         Vector3 enemyPos;
         Vector3 moveDir = new Vector3(0, 0, 0);
 
-        //Makes bullets seek out the enemy
+        //Makes bullets seek out the enemy if the bullet is able to heat seek
         if (player.hasHeatSeeking)
         {
             StartCoroutine(TimeUntilHeatSeeking());

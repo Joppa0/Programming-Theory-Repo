@@ -14,8 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private bool hasTripleShot = false;
     public bool hasHeatSeeking = false;
-
-    private PowerUp powerupScript;
+    public bool hasPowerUp = false;
 
     public MainManager mainManager;
 
@@ -23,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public int numOfHearts = 5;
 
     public GameObject bulletPrefab;
+    public GameObject powerupEffectPrefab;
 
     public Image[] hearts;
     public Sprite fullHeart;
@@ -39,11 +39,6 @@ public class PlayerController : MonoBehaviour
         Move();
         Shoot();
         UpdateHealth();
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 
     private void Move()
@@ -189,28 +184,41 @@ public class PlayerController : MonoBehaviour
     IEnumerator SlowmoRoutine()
     {
         Time.timeScale = 0.5f;
+        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
         Time.timeScale = 1;
+        hasPowerUp = false;
     }
 
     IEnumerator HeatSeekingRoutine()
     {
         hasHeatSeeking = true;
+
+        powerupEffectPrefab.SetActive(true);
+
+        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
         hasHeatSeeking = false;
+        hasPowerUp = false;
+
+        powerupEffectPrefab.SetActive(false);
     }
 
     IEnumerator TripleShotRoutine()
     {
         hasTripleShot = true;
+        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
         hasTripleShot = false;
+        hasPowerUp = false;
     }
 
     IEnumerator SpeedBoostRoutine()
     {
         moveSpeed = 6f;
+        hasPowerUp = true;
         yield return new WaitForSeconds(powerupTime);
         moveSpeed = 3f;
+        hasPowerUp = false;
     }
 }

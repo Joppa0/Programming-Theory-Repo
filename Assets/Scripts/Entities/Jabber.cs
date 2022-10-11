@@ -16,5 +16,9 @@ public class Jabber : EnemyController
 
             nav.SetDestination(player.transform.position);
         }
+        else
+        {
+            nav.ResetPath();
+        }
     }
 }
