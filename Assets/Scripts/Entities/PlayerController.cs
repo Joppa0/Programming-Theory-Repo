@@ -17,8 +17,11 @@ public class PlayerController : MonoBehaviour
 
     private float moveSpeed = 3f;
 
-    private float verticalInput;
-    private float horizontalInput;
+    private Vector3 v;
+    private Vector3 h;
+    private Vector3 movement;
+    private float horizontal;
+    private float vertical;
 
     private int powerupTime;
 
@@ -65,32 +68,52 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateHealth();
         switch (state)
         {
             case State.Normal:
                 Move();
+                GetInput();
+                Animate();
                 Shoot();
-                UpdateHealth();
                 DodgeRoll();
                 break;
             case State.DodgeRollSliding:
                 DodgeRollSliding();
                 break;
         }
-        
+    }
+
+    //Gets the vertical and horizontal input to see if the player is trying to move the character
+    void GetInput()
+    {
+        horizontal = Input.GetAxis("Horizontal");
+        vertical = Input.GetAxis("Vertical");
+
+        v = vertical * Camera.main.transform.up;
+        h = horizontal * Camera.main.transform.right;
+
+        v.y = 0;
+        h.y = 0;
+
+        movement = (h + v);
+    }
+
+    //Sets the correct animation state
+    void Animate()
+    {   
+        Vector3 localMove = transform.InverseTransformDirection(movement);
+
+        animator.SetFloat("forward", localMove.z);
+        animator.SetFloat("sideways", localMove.x);
     }
 
     private void Move()
     {
         if (!mainManager.m_GameOver)
         {
-            
-            //Gets the vertical and horizontal input to see if the player is trying to move the character
-            verticalInput = Input.GetAxisRaw("Vertical");
-            horizontalInput = Input.GetAxisRaw("Horizontal");
-
             //Gets the direction to move in
-            Vector3 direction = new Vector3(horizontalInput * moveSpeed, 0, verticalInput * moveSpeed);
+            Vector3 direction = new Vector3(horizontal * moveSpeed, 0, vertical * moveSpeed);
 
             //Transforms the local coordinates of the direction to world coordinates so that the character always moves in the same direction, regardless of it's rotation
             Vector3 worldCord = transform.InverseTransformDirection(direction);
@@ -135,7 +158,6 @@ public class PlayerController : MonoBehaviour
         if (slideSpeed < 4f)
         {
             state = State.Normal;
-            Debug.Log("Normal");
         }
     }
 
