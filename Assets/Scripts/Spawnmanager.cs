@@ -17,7 +17,7 @@ public class SpawnManager : MonoBehaviour
 
     public LayerMask m_LayerMask;
     public Camera cam;
- 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,15 +73,11 @@ public class SpawnManager : MonoBehaviour
 
                 int randNumber = Random.Range(0, 5);
 
-                float radius = powerupPrefab[randNumber].GetComponent<SphereCollider>().radius * 2f;
+                float radius = powerupPrefab[randNumber].GetComponent<SphereCollider>().radius * 1.5f;
 
-                Debug.Log(radius);
+                Collider[] collisions = Physics.OverlapSphere(placeToSpawn, radius);
 
-                Collider[] collisions = Physics.OverlapSphere(placeToSpawn, radius, m_LayerMask);
-
-                Debug.Log(collisions.Length);
-
-                if (collisions.Length > 0)
+                if (collisions.Length > 0 && prefabsToSpawn < 10)
                 {
                     prefabsToSpawn++;
                 }
@@ -97,8 +93,7 @@ public class SpawnManager : MonoBehaviour
     private Vector3 GeneratePrefabSpawnPosition()
     {
         Vector3 playerPos = GameObject.Find("Player").transform.position;
-        Vector3 spawnPos = new Vector3(Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX) + playerPos.x, -4.3f, Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ) + playerPos.z);
-        //FOR TESTING AGAINST THE ROCK IN THE SCENE Vector3 spawnPos = new Vector3(6.111492f, -4.3f, -2.746425f);
+        Vector3 spawnPos = new Vector3(Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX) + playerPos.x, 1.2f, Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ) + playerPos.z);
 
         return spawnPos;
     }

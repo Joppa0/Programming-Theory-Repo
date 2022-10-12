@@ -32,7 +32,7 @@ public class MoveForward : MonoBehaviour
         Vector3 moveDir = new Vector3(0, 0, 0);
 
         //Makes bullets seek out the enemy if the bullet is able to heat seek
-        if (player.hasHeatSeeking)
+        if (player.HasHeatSeeking)
         {
             StartCoroutine(TimeUntilHeatSeeking());
 
@@ -53,18 +53,18 @@ public class MoveForward : MonoBehaviour
 
                 if (lowestDistance < 2)
                 {
-                    transform.rotation = Quaternion.Euler(0, rotation, 0);
+                    transform.rotation = Quaternion.Euler(90, rotation, 0);
                 }
                 else
                 {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, rotation, 0), rotationSpeed);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(90, rotation, 0), rotationSpeed);
                 }
             }
             lowestDistance = 100;
         }
 
         //Moves the bullet forward
-        transform.Translate(Vector3.forward * Time.deltaTime * speed);
+        transform.Translate(Vector3.up * Time.deltaTime * speed);
 
         Vector3 playerPos = GameObject.Find("Player").transform.position;
 

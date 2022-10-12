@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class CameraMovement : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     [SerializeField] GameObject player;
     [SerializeField] float yOffset = 10f;
@@ -45,5 +46,24 @@ public class CameraMovement : MonoBehaviour
         float distance = Vector3.Distance(player.transform.position, transform.position);
        
         transform.position = transform.position + cameraMoveDir * distance * moveSpeed * Time.deltaTime;
+    }
+
+    public IEnumerator Shake(float duration, float magnitude)
+    {
+        Vector3 originalPos = transform.position;
+
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            float x = transform.position.x + (Random.Range(-1f, 1f) * magnitude);
+            float z = transform.position.z + (Random.Range(-1f, 1f) * magnitude);
+
+            transform.position = new Vector3(x, originalPos.y, z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
     }
 }

@@ -5,6 +5,16 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    private State state;
+    private enum State
+    {
+        Normal, 
+        DodgeRollSliding,
+    }
+    private float slideSpeed;
+    private Vector3 slideDir;
+    private Animator animator;
+
     private float moveSpeed = 3f;
 
     private float verticalInput;
@@ -13,9 +23,22 @@ public class PlayerController : MonoBehaviour
     private int powerupTime;
 
     private bool hasTripleShot = false;
-    public bool hasHeatSeeking = false;
-    public bool hasPowerUp = false;
+    private bool hasHeatSeeking = false;
 
+    public bool HasHeatSeeking
+    {
+        get
+        {
+            return hasHeatSeeking;
+        }
+
+        private set
+        {
+            hasHeatSeeking = value;
+        }
+    }
+
+    public CameraController cameraController;
     public MainManager mainManager;
 
     public int life = 5;
@@ -26,19 +49,35 @@ public class PlayerController : MonoBehaviour
 
     public Image[] hearts;
     public Sprite fullHeart;
-    public Sprite emptyHeart; 
+    public Sprite emptyHeart;
+
+    private void Awake()
+    {
+        state = State.Normal;
+    }
 
     private void Start()
     {
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Shoot();
-        UpdateHealth();
+        switch (state)
+        {
+            case State.Normal:
+                Move();
+                Shoot();
+                UpdateHealth();
+                DodgeRoll();
+                break;
+            case State.DodgeRollSliding:
+                DodgeRollSliding();
+                break;
+        }
+        
     }
 
     private void Move()
@@ -58,6 +97,45 @@ public class PlayerController : MonoBehaviour
 
             //Moves player character at a fixed rate
             transform.Translate(worldCord * Time.deltaTime);
+        }
+    }
+
+    //Finds the direction to dodge roll in and sets the speed and state
+    private void DodgeRoll()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            state = State.DodgeRollSliding;
+            
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+            float distance;
+            if (plane.Raycast(ray, out distance))
+            {
+                Vector3 target = ray.GetPoint(distance);
+
+                slideDir = (target - transform.position).normalized;
+
+                slideSpeed = 8f;
+            }
+        }
+    }
+
+    //Rolls the character toward the mouse
+    private void DodgeRollSliding()
+    {
+        transform.position += slideDir * slideSpeed * Time.deltaTime;
+
+        slideSpeed -= slideSpeed * 0.75f * Time.deltaTime;
+
+        animator.SetFloat("rollSpeed", slideSpeed);
+
+        if (slideSpeed < 4f)
+        {
+            state = State.Normal;
+            Debug.Log("Normal");
         }
     }
 
@@ -123,27 +201,41 @@ public class PlayerController : MonoBehaviour
             //Instantiates a bullet if left mouse button is clicked
             if (Input.GetMouseButtonDown(0) && !hasTripleShot)
             {
-                Instantiate(bulletPrefab, transform.position, transform.rotation);
+                Vector3 bulletRotation = transform.eulerAngles;
+                Vector3 bulletPosition = transform.position;
+
+                bulletPosition.y += 0.3f;
+
+                bulletRotation.x = 90;
+
+                StartCoroutine(cameraController.Shake(0.15f, 0.02f));
+
+                Instantiate(bulletPrefab, bulletPosition, Quaternion.Euler(bulletRotation));
             }
             else if (Input.GetMouseButtonDown(0) && hasTripleShot)
             {
+                StartCoroutine(cameraController.Shake(0.15f, 0.04f));
+
                 //Instantiates three different bullets, each with different rotation
                 for (int i = 0; i < 3; i++)
                 {
-                    Vector3 playerRotation = new Vector3 (transform.localEulerAngles.x, transform.localEulerAngles.y, transform.localEulerAngles.z);
+                    Vector3 playerRotation = new Vector3 (transform.localEulerAngles.x + 90, transform.localEulerAngles.y, transform.localEulerAngles.z);
+                    Vector3 bulletPosition = transform.position;
+
+                    bulletPosition.y += 0.3f;
 
                     switch (i)
                     {
                         case 0: 
                             playerRotation.y -= rotationOffset;
-                            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(playerRotation));
+                            Instantiate(bulletPrefab, bulletPosition, Quaternion.Euler(playerRotation));
                             break;
                         case 1:
-                            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(playerRotation));
+                            Instantiate(bulletPrefab, bulletPosition, Quaternion.Euler(playerRotation));
                             break;
                         case 2:
                             playerRotation.y += rotationOffset;
-                            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(playerRotation));
+                            Instantiate(bulletPrefab, bulletPosition, Quaternion.Euler(playerRotation));
                             break;
                         default:
                             break;

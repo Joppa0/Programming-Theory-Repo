@@ -11,7 +11,7 @@ public class MainManager : MonoBehaviour
     public GameObject GameOverText;
 
     public Transform playerTransform;
-    public CameraMovement cameraMovement;
+    public CameraController cameraMovement;
 
     private PlayerController playerController;
 
