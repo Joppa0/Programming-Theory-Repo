@@ -118,8 +118,22 @@ public class PlayerController : MonoBehaviour
             //Transforms the local coordinates of the direction to world coordinates so that the character always moves in the same direction, regardless of it's rotation
             Vector3 worldCord = transform.InverseTransformDirection(direction);
 
-            //Moves player character at a fixed rate
-            transform.Translate(worldCord * Time.deltaTime);
+            float distance = 1;
+
+            Vector3 raycastDirection = direction;
+            raycastDirection.y += 0.2f;
+
+            int layerMask = 1 << 7;
+
+            if (!Physics.Raycast(transform.position, raycastDirection, out RaycastHit hit, distance, layerMask))
+            {
+                //Moves player character at a fixed rate if it won't collide with obstacles
+                transform.Translate(worldCord * Time.deltaTime);
+            }
+            else
+            {
+                Debug.DrawLine(transform.position, hit.point, Color.white, 10);
+            }
         }
     }
 
@@ -194,8 +208,6 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        int rotationOffset = 15;
-
         if (!mainManager.m_GameOver)
         {
             //Fires ray from the mouse
@@ -241,7 +253,11 @@ public class PlayerController : MonoBehaviour
                 //Instantiates three different bullets, each with different rotation
                 for (int i = 0; i < 3; i++)
                 {
-                    Vector3 playerRotation = new Vector3 (transform.localEulerAngles.x + 90, transform.localEulerAngles.y, transform.localEulerAngles.z);
+                    int rotationOffset = 15;
+
+                    Vector3 playerRotation = transform.eulerAngles;
+                    playerRotation.x = 90;
+                    Debug.Log(playerRotation);
                     Vector3 bulletPosition = transform.position;
 
                     bulletPosition.y += 0.3f;

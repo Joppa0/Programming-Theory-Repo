@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    protected Animator animator;
     protected Rigidbody enemyRb;
     protected GameObject player;
     
@@ -28,32 +29,15 @@ public class EnemyController : MonoBehaviour
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
         nav = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
 
         //Gives the enemy a random priority, leading to less blocking between enemies
         nav.avoidancePriority = Random.Range(0, 100);
     }
 
-    // Update is called once per frame
-    protected void Update()
+    void Update()
     {
         Move();
-    }
-
-    protected void OnTriggerEnter(Collider other)
-    {
-        //If the enemy collides with a bullet, destroy the bullet and enemy, add points to the instance and spawn the vfx
-        if (other.CompareTag("Bullet"))
-        {
-            Instantiate(bulletImpactPrefab, transform.position, transform.rotation);
-            Destroy(other.gameObject);
-            life--;
-
-            if (life < 1)
-            {
-                Destroy(gameObject);
-                mainManager.AddPoint(pointValue);
-            }
-        }
     }
 
     protected void OnCollisionEnter(Collision collision)
@@ -65,6 +49,20 @@ public class EnemyController : MonoBehaviour
             Instantiate(playerTakeHitEffect, player.transform.position, Quaternion.identity);
             Destroy(gameObject);
             playerController.life -= damage;
+        }
+
+        //If the enemy collides with a bullet, destroy the bullet and enemy, add points to the instance and spawn the vfx
+        else if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Instantiate(bulletImpactPrefab, transform.position, transform.rotation);
+            Destroy(collision.gameObject);
+            life--;
+
+            if (life < 1)
+            {
+                Destroy(gameObject);
+                mainManager.AddPoint(pointValue);
+            }
         }
     }
 
@@ -82,5 +80,10 @@ public class EnemyController : MonoBehaviour
         {
             nav.ResetPath();
         }
+    }
+
+    protected IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(2);
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MoveForward : MonoBehaviour
 {
+    public GameObject bulletDestroyedvfx;
+
     private PlayerController player;
 
     private float speed = 20.0f;
@@ -17,7 +19,7 @@ public class MoveForward : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Move();
     }
@@ -71,6 +73,16 @@ public class MoveForward : MonoBehaviour
         //Destroys bullets who move too far away from player
         if (transform.position.x > maxPosition + playerPos.x || transform.position.x < -maxPosition + playerPos.x || transform.position.z > maxPosition + playerPos.z || transform.position.z < -maxPosition + playerPos.z)
         {
+            Destroy(gameObject);
+        }
+    }
+
+    //Destroys the bullet and spawns vfx if it collides with the environment
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Instantiate(bulletDestroyedvfx, transform.position, transform.rotation);
             Destroy(gameObject);
         }
     }

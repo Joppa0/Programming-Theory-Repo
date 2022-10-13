@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - Powerup
   - Bullet
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Ignore collisions
+  - Obstacle raycast
   - 
   - 
   - 

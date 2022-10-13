@@ -23,19 +23,12 @@ public class CameraController : MonoBehaviour
         player = GameObject.Find("Player");
     }
 
-    // Update is called once per frame
     void Update()
     {
         MoveCamera();
-    }
-
-    private void LateUpdate()
-    {
-        //Locks camera on y position
         transform.position = new Vector3(transform.position.x, yOffset, transform.position.z);
     }
 
-    
     private void MoveCamera()
     {
         //Moves the camera to follow the player with a short distance between them
@@ -44,8 +37,21 @@ public class CameraController : MonoBehaviour
         Vector3 cameraMoveDir = (player.transform.position - transform.position).normalized;
 
         float distance = Vector3.Distance(player.transform.position, transform.position);
-       
-        transform.position = transform.position + cameraMoveDir * distance * moveSpeed * Time.deltaTime;
+
+        if (distance > 0)
+        {
+            Vector3 newCameraPosition = transform.position + cameraMoveDir * distance * moveSpeed * Time.deltaTime;
+
+            float distanceAfterMoving = Vector3.Distance(newCameraPosition, cameraFollowPosition);
+
+            if (distanceAfterMoving > distance)
+            {
+                //Overshot the target
+                newCameraPosition = cameraFollowPosition;
+            }
+
+            transform.position = newCameraPosition;
+        }
     }
 
     public IEnumerator Shake(float duration, float magnitude)
