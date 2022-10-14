@@ -17,8 +17,6 @@ public class PlayerController : MonoBehaviour
 
     private float moveSpeed = 3f;
 
-    private Vector3 v;
-    private Vector3 h;
     private Vector3 movement;
     private float horizontal;
     private float vertical;
@@ -27,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private bool hasTripleShot = false;
     private bool hasHeatSeeking = false;
+    private bool canShoot = true;
 
     public bool HasHeatSeeking
     {
@@ -53,6 +52,7 @@ public class PlayerController : MonoBehaviour
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
+    public Slider rollSlider;
 
     private void Awake()
     {
@@ -72,11 +72,11 @@ public class PlayerController : MonoBehaviour
         switch (state)
         {
             case State.Normal:
+                DodgeRoll();
                 Move();
                 GetInput();
                 Animate();
                 Shoot();
-                DodgeRoll();
                 break;
             case State.DodgeRollSliding:
                 DodgeRollSliding();
@@ -87,6 +87,9 @@ public class PlayerController : MonoBehaviour
     //Gets the vertical and horizontal input to see if the player is trying to move the character
     void GetInput()
     {
+        Vector3 v;
+        Vector3 h;
+
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
@@ -143,35 +146,32 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             state = State.DodgeRollSliding;
-            
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
+            animator.SetBool("isRolling", true);
 
-            float distance;
-            if (plane.Raycast(ray, out distance))
-            {
-                Vector3 target = ray.GetPoint(distance);
+            slideDir = movement;
 
-                slideDir = (target - transform.position).normalized;
-
-                slideSpeed = 8f;
-            }
+            slideSpeed = 7f;
         }
     }
 
-    //Rolls the character toward the mouse
+    //Rolls the character in the direction of travel
     private void DodgeRollSliding()
     {
+        rollSlider.gameObject.SetActive(true);
+
         transform.position += slideDir * slideSpeed * Time.deltaTime;
 
-        slideSpeed -= slideSpeed * 0.75f * Time.deltaTime;
+        rollSlider.value += slideSpeed * 1f * Time.deltaTime;
 
-        animator.SetFloat("rollSpeed", slideSpeed);
+        slideSpeed -= slideSpeed * 1f * Time.deltaTime;
 
-        if (slideSpeed < 4f)
+        if (slideSpeed < 3f)
         {
             state = State.Normal;
+            animator.SetBool("isRolling", false);
+            rollSlider.value = 0;
+            rollSlider.gameObject.SetActive(false);
         }
     }
 
@@ -233,8 +233,10 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, rotation, 0);
             }
             //Instantiates a bullet if left mouse button is clicked
-            if (Input.GetMouseButtonDown(0) && !hasTripleShot)
+            if (Input.GetMouseButton(0) && !hasTripleShot && canShoot)
             {
+                StartCoroutine(ShootingCD());
+
                 Vector3 bulletRotation = transform.eulerAngles;
                 Vector3 bulletPosition = transform.position;
 
@@ -246,9 +248,10 @@ public class PlayerController : MonoBehaviour
 
                 Instantiate(bulletPrefab, bulletPosition, Quaternion.Euler(bulletRotation));
             }
-            else if (Input.GetMouseButtonDown(0) && hasTripleShot)
+            else if (Input.GetMouseButton(0) && hasTripleShot && canShoot)
             {
                 StartCoroutine(cameraController.Shake(0.15f, 0.04f));
+                StartCoroutine(ShootingCD());
 
                 //Instantiates three different bullets, each with different rotation
                 for (int i = 0; i < 3; i++)
@@ -257,7 +260,7 @@ public class PlayerController : MonoBehaviour
 
                     Vector3 playerRotation = transform.eulerAngles;
                     playerRotation.x = 90;
-                    Debug.Log(playerRotation);
+
                     Vector3 bulletPosition = transform.position;
 
                     bulletPosition.y += 0.3f;
@@ -357,5 +360,12 @@ public class PlayerController : MonoBehaviour
         powerupEffectPrefab[0].SetActive(false);
 
         moveSpeed = 3f;
+    }
+
+    IEnumerator ShootingCD()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(0.2f);
+        canShoot = true;
     }
 }

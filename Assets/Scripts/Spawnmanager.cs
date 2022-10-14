@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        SpawnEnemyWave(waveNumber);
+        SpawnEnemyWave(waveNumber, false);
     }
 
     // Update is called once per frame
@@ -33,11 +33,18 @@ public class SpawnManager : MonoBehaviour
         if (enemyCount == 1)
         {
             waveNumber++;
-            SpawnEnemyWave(waveNumber);
+            if (waveNumber % 10 == 0)
+            {
+                SpawnEnemyWave(waveNumber, true);
+            }
+            else
+            {
+                SpawnEnemyWave(waveNumber, false);
+            }
         }
     }
 
-    void SpawnEnemyWave(int enemiesToSpawn)
+    void SpawnEnemyWave(int enemiesToSpawn, bool bossWave)
     {
         //Spawns random new enemies with random positions
         for (int i = 0; i < enemiesToSpawn; i++)
@@ -45,6 +52,13 @@ public class SpawnManager : MonoBehaviour
             Vector3 placeToSpawn = GenerateEnemySpawnPosition();
 
             int randNumber = Random.Range(0, 3);
+
+            //Guarantees one boss spawning if it's a bosswave
+            if (bossWave)
+            {
+                randNumber = 3;
+                bossWave = false;
+            }
 
             //Creates a box to check for collisions when trying to spawn
             Collider[] collisionWithEnemy = Physics.OverlapBox(placeToSpawn, enemyPrefab[randNumber].transform.localScale, Quaternion.identity, m_LayerMask);
@@ -54,7 +68,6 @@ public class SpawnManager : MonoBehaviour
                 //If there are collisions other than the ground, spawn a new enemy with a new spawnpoint
                 enemiesToSpawn++;
             }
-            
             else
             {
                 //If there are no other collisions, spawn at the chosen spawnpoint
@@ -88,6 +101,13 @@ public class SpawnManager : MonoBehaviour
             }
         }
     }
+
+    //Spawns the permanent health increase
+    public void SpawnHealthIncrease(Vector3 spawnPos)
+    {
+        Instantiate(powerupPrefab[5], spawnPos, Quaternion.identity);
+    }
+
 
     //Generates a spawnpoint for the powerup
     private Vector3 GeneratePrefabSpawnPosition()

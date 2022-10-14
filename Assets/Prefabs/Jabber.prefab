@@ -784,8 +784,8 @@ GameObject:
   - component: {fileID: 3568628872616989892}
   - component: {fileID: 577511860193047363}
   - component: {fileID: -1971423346295388363}
-  - component: {fileID: -8689798615157381367}
   - component: {fileID: 1863385064324028928}
+  - component: {fileID: -6081035928923128801}
   m_Layer: 0
   m_Name: Jabber
   m_TagString: Enemy
@@ -857,21 +857,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.70686, y: 1.8524346, z: 0.46854657}
   m_Center: {x: 0.013255388, y: 0.92993903, z: 0.009792268}
---- !u!114 &-8689798615157381367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4803014352389650695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13cade9761c54664396dce2237f14dec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletImpactPrefab: {fileID: 100002, guid: 3b1513bcb86426b4795879be6a128ed7, type: 3}
-  playerTakeHitEffect: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a,
-    type: 3}
 --- !u!195 &1863385064324028928
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -882,7 +867,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -894,6 +879,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-6081035928923128801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4803014352389650695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7b8e63a5d28194e8f2a2009d4bf430, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletImpactPrefab: {fileID: 100002, guid: 3b1513bcb86426b4795879be6a128ed7, type: 3}
+  playerTakeHitEffect: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a,
+    type: 3}
 --- !u!1 &4956532458698703312
 GameObject:
   m_ObjectHideFlags: 0

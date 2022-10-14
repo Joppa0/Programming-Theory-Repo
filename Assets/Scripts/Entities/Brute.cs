@@ -21,18 +21,4 @@ public class Brute : EnemyController
         life = 2;
         damage = 2;
     }
-
-    protected override void Move()
-    {
-        if (!mainManager.m_GameOver)
-        {
-            nav.speed = 2.0f;
-
-            nav.SetDestination(player.transform.position);
-        }
-        else
-        {
-            nav.ResetPath();
-        }
-    }
 }

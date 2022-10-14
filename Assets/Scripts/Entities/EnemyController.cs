@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour
         Move();
     }
 
-    protected void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -67,12 +67,11 @@ public class EnemyController : MonoBehaviour
     }
 
     //Moves the enemy towards player as long as game isn't over
-    protected virtual void Move()
+    protected void Move()
     {
         if (!mainManager.m_GameOver)
         {
-            //Sets the speed of the zombie and the destination as the player's position, meaning the zombie will move towards the player
-            nav.speed = 3.0f;
+            //Sets the destination as the player's position, meaning the zombie will move towards the player
 
             nav.SetDestination(player.transform.position);
         }
@@ -80,10 +79,5 @@ public class EnemyController : MonoBehaviour
         {
             nav.ResetPath();
         }
-    }
-
-    protected IEnumerator AttackCooldown()
-    {
-        yield return new WaitForSeconds(2);
     }
 }

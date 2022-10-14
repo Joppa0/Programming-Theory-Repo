@@ -41,8 +41,8 @@ public class PowerUp : MonoBehaviour
                 case 4:
                     player.OnHeatSeekingEnter();
                     break;
-
-                default:
+                case 5:
+                    player.numOfHearts++;
                     break;
             }
             Destroy(gameObject);
