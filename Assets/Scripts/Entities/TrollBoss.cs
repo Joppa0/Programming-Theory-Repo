@@ -16,7 +16,6 @@ public class TrollBoss : EnemyController
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
-        playerAudio = GameObject.Find("Player").GetComponent<AudioSource>();
 
         pointValue *= 50;
         life = 25;
@@ -30,7 +29,7 @@ public class TrollBoss : EnemyController
             //Destroy the enemy, reduce the player's life and spawn the blood vfx they collide
 
             Instantiate(playerTakeHitEffect, player.transform.position, Quaternion.identity);
-            playerAudio.PlayOneShot(hitPlayerSound, 0.1f);
+            SoundManager.instance.PlaySound(hitPlayerSound, 0.1f);
             Destroy(gameObject);
             playerController.life -= damage;
         }

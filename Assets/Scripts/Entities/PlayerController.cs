@@ -27,11 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool hasHeatSeeking = false;
     private bool canShoot = true;
 
-    private AudioSource playerAudio;
-    [SerializeField] private AudioClip healSound;
-    [SerializeField] private AudioClip shootSound;
-    [SerializeField] private AudioClip rollSound;
-    [SerializeField] private AudioClip powerupSound;
+    [SerializeField] private AudioClip healSound, shootSound, rollSound, powerupSound;
 
     public bool HasHeatSeeking
     {
@@ -67,7 +63,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        playerAudio = GetComponent<AudioSource>();
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
         animator = GetComponent<Animator>();
     }
@@ -152,7 +147,7 @@ public class PlayerController : MonoBehaviour
 
             animator.SetBool("isRolling", true);
 
-            playerAudio.PlayOneShot(rollSound);
+            SoundManager.instance.PlaySound(rollSound, 1);
 
             slideDir = movement;
 
@@ -252,13 +247,13 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(cameraController.Shake(0.15f, 0.02f));
 
                 Instantiate(bulletPrefab, bulletPosition, Quaternion.Euler(bulletRotation));
-                playerAudio.PlayOneShot(shootSound, 0.05f);
+                SoundManager.instance.PlaySound(shootSound, 0.05f);
             }
             else if (Input.GetMouseButton(0) && hasTripleShot && canShoot)
             {
                 StartCoroutine(cameraController.Shake(0.5f, 0.04f));
                 StartCoroutine(ShootingCD());
-                playerAudio.PlayOneShot(shootSound, 0.05f);
+                SoundManager.instance.PlaySound(shootSound, 0.05f);
 
                 //Instantiates three different bullets, each with different rotation
                 for (int i = 0; i < 3; i++)
@@ -296,40 +291,40 @@ public class PlayerController : MonoBehaviour
     public void OnHealthPickupEnter()
     {
         life++;
-        playerAudio.PlayOneShot(healSound);
+        SoundManager.instance.PlaySound(healSound, 1);
     }
 
     public void OnHealthIncreaseEnter()
     {
         numOfHearts++;
-        playerAudio.PlayOneShot(healSound);
+        SoundManager.instance.PlaySound(healSound, 1);
     }
 
     public void OnSlowMotionEnter()
     {
         powerupTime = 5;
-        playerAudio.PlayOneShot(powerupSound, 0.1f);
+        SoundManager.instance.PlaySound(powerupSound, 0.1f);
         StartCoroutine(SlowmoRoutine());
     }
 
     public void OnSpeedBoostEnter()
     {
         powerupTime = 5;
-        playerAudio.PlayOneShot(powerupSound, 0.1f);
+        SoundManager.instance.PlaySound(powerupSound, 0.1f);
         StartCoroutine(SpeedBoostRoutine());
     }
 
     public void OnTripleShotEnter()
     {
         powerupTime = 5;
-        playerAudio.PlayOneShot(powerupSound, 0.1f);
+        SoundManager.instance.PlaySound(powerupSound, 0.1f);
         StartCoroutine(TripleShotRoutine());
     }
 
     public void OnHeatSeekingEnter()
     {
         powerupTime = 5;
-        playerAudio.PlayOneShot(powerupSound, 0.1f);
+        SoundManager.instance.PlaySound(powerupSound, 0.1f);
         StartCoroutine(HeatSeekingRoutine());
     }
 
