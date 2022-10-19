@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    protected AudioSource playerAudio;
+    [SerializeField] protected AudioClip hitPlayerSound;
+
     protected Animator animator;
     protected Rigidbody enemyRb;
     protected GameObject player;
@@ -30,6 +33,7 @@ public class EnemyController : MonoBehaviour
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        playerAudio = GameObject.Find("Player").GetComponent<AudioSource>();
 
         //Gives the enemy a random priority, leading to less blocking between enemies
         nav.avoidancePriority = Random.Range(0, 100);
@@ -47,6 +51,7 @@ public class EnemyController : MonoBehaviour
             //Destroy the enemy, reduce the player's life and spawn the blood vfx they collide
 
             Instantiate(playerTakeHitEffect, player.transform.position, Quaternion.identity);
+            playerAudio.PlayOneShot(hitPlayerSound, 0.1f);
             Destroy(gameObject);
             playerController.life -= damage;
         }

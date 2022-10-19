@@ -7,6 +7,11 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] enemyPrefab;
     public GameObject[] powerupPrefab;
 
+    public LayerMask m_LayerMask;
+    public Camera cam;
+
+    private RoundCount roundCountScript;
+
     private int enemyCount;
     private int waveNumber = 2;
 
@@ -15,12 +20,11 @@ public class SpawnManager : MonoBehaviour
     private float prefabSpawnRangeX = 12f;
     private float prefabSpawnRangeZ = 4f;
 
-    public LayerMask m_LayerMask;
-    public Camera cam;
 
     // Start is called before the first frame update
     void Start()
     {
+        roundCountScript = GameObject.Find("RoundCounter").GetComponent<RoundCount>();
         cam = Camera.main;
         SpawnEnemyWave(waveNumber, false);
     }
@@ -46,6 +50,8 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemyWave(int enemiesToSpawn, bool bossWave)
     {
+        roundCountScript.UpdateRoundCounter(enemiesToSpawn - 1);
+
         //Spawns random new enemies with random positions
         for (int i = 0; i < enemiesToSpawn; i++)
         {

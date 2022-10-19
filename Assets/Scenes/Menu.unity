@@ -501,9 +501,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90205d76cacf46a47b9090af4fe0d014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
   inputField: {fileID: 1356712918}
   highScore: {fileID: 2106574079}
+  roundNumber: 0
 --- !u!114 &436755046
 MonoBehaviour:
   m_ObjectHideFlags: 0

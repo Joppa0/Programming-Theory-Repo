@@ -14,6 +14,7 @@ public class Brute : EnemyController
         mainManager = GameObject.Find("Main Manager").GetComponent<MainManager>();
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        playerAudio = GameObject.Find("Player").GetComponent<AudioSource>();
 
         nav.avoidancePriority = Random.Range(0, 100);
 
