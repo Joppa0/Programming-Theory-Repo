@@ -24,17 +24,16 @@ public class TrollBoss : EnemyController
 
     protected override void OnCollisionEnter(Collision collision)
     {
+        // Destroy the enemy, reduce the player's life and spawn the blood vfx they collide.
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Destroy the enemy, reduce the player's life and spawn the blood vfx they collide
-
             Instantiate(playerTakeHitEffect, player.transform.position, Quaternion.identity);
             SoundManager.instance.PlaySound(hitPlayerSound, 0.1f);
             Destroy(gameObject);
             playerController.life -= damage;
         }
 
-        //If the enemy collides with a bullet, destroy the bullet and enemy, add points to the instance and spawn the vfx and the health increase powerup
+        // If the enemy collides with a bullet, destroy the bullet and enemy, add points to the instance and spawn the vfx and the health increase powerup.
         else if (collision.gameObject.CompareTag("Bullet"))
         {
             Instantiate(bulletImpactPrefab, transform.position, transform.rotation);

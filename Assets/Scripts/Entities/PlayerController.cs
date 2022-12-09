@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //Gets the vertical and horizontal input to see if the player is trying to move the character
+    // Gets the vertical and horizontal input to see if the player is trying to move the character.
     void GetInput()
     {
         Vector3 v;
@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
         movement = (h + v);
     }
 
-    //Sets the correct animation state
+    // Sets the correct animation state.
     void Animate()
     {   
         Vector3 localMove = transform.InverseTransformDirection(movement);
@@ -113,14 +113,15 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("sideways", localMove.x);
     }
 
+    // Moves the player at a fixed rate if it doesn't collide with obstacles.
     private void Move()
     {
         if (!mainManager.m_GameOver)
         {
-            //Gets the direction to move in
+            // Gets the direction to move in.
             Vector3 direction = new Vector3(horizontal * moveSpeed, 0, vertical * moveSpeed);
 
-            //Transforms the local coordinates of the direction to world coordinates so that the character always moves in the same direction, regardless of it's rotation
+            // Transforms the local coordinates of the direction to world coordinates so that the character always moves in the same direction, regardless of it's rotation.
             Vector3 worldCord = transform.InverseTransformDirection(direction);
 
             float distance = 1;
@@ -130,15 +131,15 @@ public class PlayerController : MonoBehaviour
 
             int layerMask = 1 << 7;
 
+            // Checks for collisions.
             if (!Physics.Raycast(transform.position, raycastDirection, out RaycastHit hit, distance, layerMask))
             {
-                //Moves player character at a fixed rate if it won't collide with obstacles
                 transform.Translate(worldCord * Time.deltaTime);
             }
         }
     }
 
-    //Finds the direction to dodge roll in and sets the speed and state
+    // Finds the direction to dodge roll in and sets the speed and state.
     private void DodgeRoll()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -155,7 +156,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //Rolls the character in the direction of travel
+    // Rolls the character in the direction of travel.
     private void DodgeRollSliding()
     {
         rollSlider.gameObject.SetActive(true);
@@ -177,7 +178,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateHealth()
     {
-        //Sets life to max number of hearts if it exceeds the value
+        // Sets life to max number of hearts if it exceeds the value.
         if (life > numOfHearts)
         {
             life = numOfHearts;
@@ -185,20 +186,23 @@ public class PlayerController : MonoBehaviour
         
         for (int i = 0; i < hearts.Length; i++)
         {
-            //Sets sprite of the heart to show if its full or empty
+            // Sets sprite of the heart to show if it's full or empty.
             if (i < life)
             {
                 hearts[i].sprite = fullHeart;
             }
+
             else
             {
                 hearts[i].sprite = emptyHeart;
             }
-            //Enables or disables the heart depending on if it's supposed to be shown or not
+
+            // Enables or disables the heart depending on if it's supposed to be shown or not.
             if (i < numOfHearts)
             {
                 hearts[i].enabled = true;
             }
+
             else
             {
                 hearts[i].enabled = false;
@@ -206,33 +210,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Makes the player shoot towards the location of the mouse on the screen.
     private void Shoot()
     {
         if (!mainManager.m_GameOver)
         {
-            //Fires ray from the mouse
+            // Fires ray from the mouse.
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            //Plane to intersect with the ray
+            // Plane to intersect with the ray.
             Plane plane = new Plane(Vector3.up, Vector3.zero);
 
-            //Gets the distance of the ray if it has has intersected with a collider
+            // Gets the distance of the ray if it has has intersected with a collider.
             float distance;
             if (plane.Raycast(ray, out distance))
             {
-                //Gets the target point at the distance along the ray
+                // Gets the target point at the distance along the ray.
                 Vector3 target = ray.GetPoint(distance);
 
-                //The direction to rotate towards
+                // The direction to rotate towards.
                 Vector3 direction = target - transform.position;
 
-                //Gets desired rotation
+                // Gets desired rotation.
                 float rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 
-                //Rotates transform towards mouse
+                // Rotates transform towards mouse.
                 transform.rotation = Quaternion.Euler(0, rotation, 0);
             }
-            //Instantiates a bullet if left mouse button is clicked
+
+            // Instantiates a bullet if left mouse button is clicked.
             if (Input.GetMouseButton(0) && !hasTripleShot && canShoot)
             {
                 StartCoroutine(ShootingCD());
@@ -249,13 +255,15 @@ public class PlayerController : MonoBehaviour
                 Instantiate(bulletPrefab, bulletPosition, Quaternion.Euler(bulletRotation));
                 SoundManager.instance.PlaySound(shootSound, 0.05f);
             }
+
+            // Instantiates three bullets if the player has TripleShot.
             else if (Input.GetMouseButton(0) && hasTripleShot && canShoot)
             {
                 StartCoroutine(cameraController.Shake(0.5f, 0.04f));
                 StartCoroutine(ShootingCD());
                 SoundManager.instance.PlaySound(shootSound, 0.05f);
 
-                //Instantiates three different bullets, each with different rotation
+                // The bullets are instantiated at different rotations relative to the player.
                 for (int i = 0; i < 3; i++)
                 {
                     int rotationOffset = 15;
@@ -297,6 +305,7 @@ public class PlayerController : MonoBehaviour
     public void OnHealthIncreaseEnter()
     {
         numOfHearts++;
+        life++;
         SoundManager.instance.PlaySound(healSound, 1);
     }
 

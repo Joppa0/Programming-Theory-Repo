@@ -29,7 +29,7 @@ public class PowerUp : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Checks which powerup the player has collided with, then calls the appropriate function
+            // Checks which powerup the player has collided with, then calls the appropriate function.
             switch (powerupID)
             {
                 case 0:
@@ -59,6 +59,7 @@ public class PowerUp : MonoBehaviour
         }
     }
 
+    // Slowly moves the powerup towards the player.
     private void MoveToPlayer()
     {
         if (!mainManager.m_GameOver)

@@ -7,7 +7,7 @@ public class Brute : EnemyController
 {
     protected override void Start()
     {
-        //Overrides the start function of EnemyController to change the life and point values
+        // Overrides the start function of EnemyController to change the life and point values.
         enemyRb = GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();

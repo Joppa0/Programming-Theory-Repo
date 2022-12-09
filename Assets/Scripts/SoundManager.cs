@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    // Plays the provided sound.
     public void PlaySound(AudioClip clip, float volume)
     {
         effectSource.PlayOneShot(clip, volume);

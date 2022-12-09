@@ -29,9 +29,9 @@ public class CameraController : MonoBehaviour
         transform.position = new Vector3(transform.position.x, yOffset, transform.position.z);
     }
 
+    // Moves the camera to follow the player with a short distance between them.
     private void MoveCamera()
     {
-        //Moves the camera to follow the player with a short distance between them
         Vector3 cameraFollowPosition = GetCameraFollowPositionFunc();
 
         Vector3 cameraMoveDir = (player.transform.position - transform.position).normalized;
@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour
 
             if (distanceAfterMoving > distance)
             {
-                //Overshot the target
+                // Overshot the target.
                 newCameraPosition = cameraFollowPosition;
             }
 
@@ -54,6 +54,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    // Makes camera shake.
     public IEnumerator Shake(float duration, float magnitude)
     {
         Vector3 originalPos = transform.position;

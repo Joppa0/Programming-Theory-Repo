@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
-        //Gives the enemy a random priority, leading to less blocking between enemies
+        // Gives the enemy a random priority, leading to less blocking between enemies.
         nav.avoidancePriority = Random.Range(0, 100);
     }
 
@@ -46,15 +46,14 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Destroy the enemy, reduce the player's life and spawn the blood vfx they collide
-
+            // Destroy the enemy, reduce the player's life and spawn the blood vfx they collide.
             Instantiate(playerTakeHitEffect, player.transform.position, Quaternion.identity);
             SoundManager.instance.PlaySound(hitPlayerSound, 0.1f);
             Destroy(gameObject);
             playerController.life -= damage;
         }
 
-        //If the enemy collides with a bullet, destroy the bullet and enemy, add points to the instance and spawn the vfx
+        // If the enemy collides with a bullet, destroy the bullet and enemy, add points to the instance and spawn the vfx.
         else if (collision.gameObject.CompareTag("Bullet"))
         {
             Instantiate(bulletImpactPrefab, transform.position, transform.rotation);
@@ -69,12 +68,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    //Moves the enemy towards player as long as game isn't over
+    // Moves the enemy towards player as long as game isn't over.
     protected void Move()
     {
         if (!mainManager.m_GameOver)
         {
-            //Sets the destination as the player's position, meaning the zombie will move towards the player
+            // Sets the destination as the player's position, meaning the zombie will move towards the player.
 
             nav.SetDestination(player.transform.position);
         }

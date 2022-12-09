@@ -24,7 +24,7 @@ public class MoveForward : MonoBehaviour
         Move();
     }
 
-    //ABSTRACTION
+    // Moves the bullet in the direction it's facing.
     private void Move()
     {
         float rotationSpeed = 0.1f;
@@ -33,7 +33,7 @@ public class MoveForward : MonoBehaviour
         Vector3 enemyPos;
         Vector3 moveDir = new Vector3(0, 0, 0);
 
-        //Makes bullets seek out the enemy if the bullet is able to heat seek
+        // Makes bullets seek out the enemy if the bullet is able to heat seek.
         if (player.HasHeatSeeking)
         {
             StartCoroutine(TimeUntilHeatSeeking());
@@ -65,19 +65,19 @@ public class MoveForward : MonoBehaviour
             lowestDistance = 100;
         }
 
-        //Moves the bullet forward
+        // Moves the bullet forward.
         transform.Translate(Vector3.up * Time.deltaTime * speed);
 
         Vector3 playerPos = GameObject.Find("Player").transform.position;
 
-        //Destroys bullets who move too far away from player
+        // Destroys bullets who move too far away from player.
         if (transform.position.x > maxPosition + playerPos.x || transform.position.x < -maxPosition + playerPos.x || transform.position.z > maxPosition + playerPos.z || transform.position.z < -maxPosition + playerPos.z)
         {
             Destroy(gameObject);
         }
     }
 
-    //Destroys the bullet and spawns vfx if it collides with the environment
+    // Destroys the bullet and spawns vfx if it collides with the environment.
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
@@ -87,7 +87,7 @@ public class MoveForward : MonoBehaviour
         }
     }
 
-    //Sets a cooldown after which bullets can start heatseeking
+    // Sets a cooldown after which bullets can start heatseeking.
     IEnumerator TimeUntilHeatSeeking()
     {
         yield return new WaitForSeconds(0.1f);
