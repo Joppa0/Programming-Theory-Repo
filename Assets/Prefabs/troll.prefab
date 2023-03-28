@@ -3118,7 +3118,7 @@ GameObject:
   - component: {fileID: 1890135560280738941}
   - component: {fileID: -7954347081694037744}
   m_Layer: 0
-  m_Name: troll
+  m_Name: Troll
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

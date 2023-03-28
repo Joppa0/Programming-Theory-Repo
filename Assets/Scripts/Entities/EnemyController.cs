@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,7 @@ public class EnemyController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         // Gives the enemy a random priority, leading to less blocking between enemies.
-        nav.avoidancePriority = Random.Range(0, 100);
+        nav.avoidancePriority = UnityEngine.Random.Range(0, 100);
     }
 
     void Update()
@@ -65,6 +66,11 @@ public class EnemyController : MonoBehaviour
                 Destroy(gameObject);
                 mainManager.AddPoint(pointValue);
             }
+        }
+
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Console.WriteLine("Collided");
         }
     }
 

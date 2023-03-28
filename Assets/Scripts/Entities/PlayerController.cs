@@ -259,7 +259,7 @@ public class PlayerController : MonoBehaviour
             // Instantiates three bullets if the player has TripleShot.
             else if (Input.GetMouseButton(0) && hasTripleShot && canShoot)
             {
-                StartCoroutine(cameraController.Shake(0.5f, 0.04f));
+                StartCoroutine(cameraController.Shake(0.15f, 0.03f));
                 StartCoroutine(ShootingCD());
                 SoundManager.instance.PlaySound(shootSound, 0.05f);
 

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -19,6 +21,9 @@ public class SpawnManager : MonoBehaviour
     private float enemySpawnRangeZ = 7.5f;
     private float prefabSpawnRangeX = 12f;
     private float prefabSpawnRangeZ = 4f;
+
+    private Vector3 testvector;
+    private int testint;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +69,7 @@ public class SpawnManager : MonoBehaviour
         {
             placeToSpawn = GenerateEnemySpawnPosition();
 
-            int randNumber = Random.Range(0, 3);
+            int randNumber = UnityEngine.Random.Range(0, 3);
 
             // Guarantees one boss spawning if it's a bosswave.
             if (bossWave)
@@ -74,7 +79,7 @@ public class SpawnManager : MonoBehaviour
             }
 
             // Creates a box to check for collisions when trying to spawn.
-            Collider[] collisionWithEnemy = Physics.OverlapBox(placeToSpawn, enemyPrefab[randNumber].transform.localScale, Quaternion.identity, m_LayerMask);
+            Collider[] collisionWithEnemy = Physics.OverlapBox(new Vector3(placeToSpawn.x, (placeToSpawn.y + 1.2f), placeToSpawn.z), enemyPrefab[randNumber].transform.localScale * 3, Quaternion.identity, m_LayerMask);
             
             if (collisionWithEnemy.Length > 1)
             {
@@ -100,7 +105,7 @@ public class SpawnManager : MonoBehaviour
     {
         Vector3 placeToSpawn = GeneratePowerupSpawnPosition();
 
-        int randNumber = Random.Range(0, 5);
+        int randNumber = UnityEngine.Random.Range(0, 5);
 
         GameObject powerup = Instantiate(powerupPrefab[randNumber], placeToSpawn, Quaternion.identity);
 
@@ -126,7 +131,7 @@ public class SpawnManager : MonoBehaviour
     private Vector3 GeneratePowerupSpawnPosition()
     {
         Vector3 playerPos = GameObject.Find("Player").transform.position;
-        Vector3 spawnPos = new Vector3(Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX) + playerPos.x, 1.2f, Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ) + playerPos.z);
+        Vector3 spawnPos = new Vector3(UnityEngine.Random.Range(-prefabSpawnRangeX, prefabSpawnRangeX) + playerPos.x, 1.2f, UnityEngine.Random.Range(-prefabSpawnRangeZ, prefabSpawnRangeZ) + playerPos.z);
 
         return spawnPos;
     }
@@ -142,8 +147,8 @@ public class SpawnManager : MonoBehaviour
 
         do
         {
-            float spawnPosX = Random.Range(-enemySpawnRangeX, enemySpawnRangeX) + playerPos.x;
-            float spawnPosZ = Random.Range(-enemySpawnRangeZ, enemySpawnRangeZ) + playerPos.z;
+            float spawnPosX = UnityEngine.Random.Range(-enemySpawnRangeX, enemySpawnRangeX) + playerPos.x;
+            float spawnPosZ = UnityEngine.Random.Range(-enemySpawnRangeZ, enemySpawnRangeZ) + playerPos.z;
 
             randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
 
