@@ -221,7 +221,7 @@ public class PlayerController : MonoBehaviour
             // Plane to intersect with the ray.
             Plane plane = new Plane(Vector3.up, Vector3.zero);
 
-            // Gets the distance of the ray if it has has intersected with a collider.
+            // Gets the distance of the ray if it has intersected with a collider.
             float distance;
             if (plane.Raycast(ray, out distance))
             {

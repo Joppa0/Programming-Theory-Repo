@@ -15,7 +15,7 @@ public class SpawnManager : MonoBehaviour
     private RoundCount roundCountScript;
 
     private int enemyCount;
-    private int waveNumber = 2;
+    private int waveNumber = 1;
 
     private float enemySpawnRangeX = 20.0f;
     private float enemySpawnRangeZ = 7.5f;
@@ -30,7 +30,7 @@ public class SpawnManager : MonoBehaviour
     {
         roundCountScript = GameObject.Find("RoundCounter").GetComponent<RoundCount>();
         cam = Camera.main;
-        SpawnEnemyWave(waveNumber, false);
+        SpawnEnemyWave(waveNumber + 1, false);
     }
 
     // Update is called once per frame
@@ -48,11 +48,11 @@ public class SpawnManager : MonoBehaviour
             waveNumber++;
             if (waveNumber % 10 == 0)
             {
-                SpawnEnemyWave(waveNumber, true);
+                SpawnEnemyWave(waveNumber + 1, true);
             }
             else
             {
-                SpawnEnemyWave(waveNumber, false);
+                SpawnEnemyWave(waveNumber + 1, false);
             }
         }
     }
@@ -60,7 +60,7 @@ public class SpawnManager : MonoBehaviour
     // Spawns the wave.
     void SpawnEnemyWave(int enemiesToSpawn, bool bossWave)
     {
-        roundCountScript.UpdateRoundCounter(enemiesToSpawn - 1);
+        roundCountScript.UpdateRoundCounter(waveNumber);
 
         Vector3 placeToSpawn = new Vector3();
 
